@@ -1,0 +1,56 @@
+services:
+  bot:
+    container_name: bot
+    image: oshinoko/tg-bot:latest
+    volumes:
+      - ../logs:/app/logs
+    env_file:
+      - ../.env
+    depends_on:
+      - redis
+      - postgres
+      - celery
+      - celery-beat
+
+  redis:
+    container_name: bot-redis
+    image: redis:latest
+    volumes:
+      - redis_data:/data
+    env_file:
+      - ../.env
+    command: redis-server --requirepass ${REDIS_PASSWORD} --port ${REDIS_PORT} --appendonly yes
+
+  postgres:
+    container_name: bot-postgres
+    image: postgres:17
+    env_file:
+      - ../.env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  celery:
+    container_name: bot-celery
+    image: oshinoko/tg-bot-celery:latest
+    env_file:
+      - ../.env
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - ../logs:/app/logs
+
+  celery-beat:
+    container_name: bot-celery-beat
+    image: oshinoko/tg-bot-celery:latest
+    command: uv run celery -A bg_tasks.celery_app beat -S redbeat.RedBeatScheduler --loglevel=info
+    env_file:
+      - ../.env
+    depends_on:
+      - celery
+      - redis
+
+
+volumes:
+  redis_data:
+  pg_data:
