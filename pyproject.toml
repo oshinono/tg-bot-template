@@ -18,3 +18,9 @@ dependencies = [
     "pytz>=2025.2",
     "sqlalchemy>=2.0.43",
 ]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "ruff>=0.12.10",
+]
