@@ -3,10 +3,11 @@ from typing import Callable, Awaitable, Dict, Any
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
+
 class ClientMiddleware(BaseMiddleware):
     def __init__(self, **clients):
         self.clients = clients
-        
+
     async def __call__(
         self,
         handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],

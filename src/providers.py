@@ -11,8 +11,8 @@ from database import RedisClient
 from config import settings
 from aiogram import Bot
 
-class DbProvider(Provider):
 
+class DbProvider(Provider):
     @provide(scope=Scope.REQUEST)
     async def provide_postgres(self) -> AsyncGenerator[AsyncSession, None]:
         async for session in get_async_session():
@@ -28,7 +28,7 @@ class DbProvider(Provider):
     async def provide_redis(self) -> RedisClient:
         return RedisClient()
 
-        
+
 class AiogramProvider(Provider):
     @provide(scope=Scope.APP)
     async def provide_bot(self) -> Bot:

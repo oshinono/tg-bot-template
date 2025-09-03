@@ -15,11 +15,12 @@ from aiogram.fsm.storage.redis import RedisStorage
 
 
 async def init():
-    setup_logger('bot')
+    setup_logger("bot")
     async with container() as c:
-        session = await c.get(AsyncSession)
+        # session = await c.get(AsyncSession)
         redis = await c.get(RedisClient)
         await setup_schedule(redis)
+
 
 async def main():
     await init()
@@ -31,13 +32,15 @@ async def main():
 
         await bot.set_my_commands(commands)
         await bot.delete_webhook(drop_pending_updates=True)
-        
+
         try:
             storage = RedisStorage.from_url(REDIS_URL)
             dp: Dispatcher = Dispatcher(storage=storage)
             dp.include_routers(index_router)
 
-            dp.update.middleware.register(ClientMiddleware(redis=redis, session=psql_session))
+            dp.update.middleware.register(
+                ClientMiddleware(redis=redis, session=psql_session)
+            )
 
             bot_info = await bot.get_me()
             logger.info(f"Бот запущен | {bot_info.full_name}, @{bot_info.username}")
@@ -47,6 +50,7 @@ async def main():
             await dp.stop_polling()
             await dp.storage.close()
             await bot.session.close()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

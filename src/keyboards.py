@@ -2,29 +2,29 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from database import Base
 
+
 async def get_index_keyboard() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            
-        ]
-    )
+    return InlineKeyboardMarkup(inline_keyboard=[])
+
 
 async def get_simple_back_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="Назад ⬅️", callback_data="back")]
-        ]
+        inline_keyboard=[[InlineKeyboardButton(text="Назад ⬅️", callback_data="back")]]
     )
+
 
 async def get_default_back_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="Назад ⬅️", callback_data="back")],
-            [InlineKeyboardButton(text="Главная 🔙", callback_data="index")]
+            [InlineKeyboardButton(text="Главная 🔙", callback_data="index")],
         ]
     )
 
-async def get_objects_keyboards(objects: list[Base], name: str, current_sort: str = None) -> InlineKeyboardMarkup:
+
+async def get_objects_keyboards(
+    objects: list[Base], name: str, current_sort: str = None
+) -> InlineKeyboardMarkup:
     b = InlineKeyboardBuilder()
 
     if objects:
@@ -41,6 +41,8 @@ async def get_objects_keyboards(objects: list[Base], name: str, current_sort: st
 
 
 async def get_delete_message():
-    return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Скрыть", callback_data="delete_notification")]
-    ])
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="Скрыть", callback_data="delete_notification")]
+        ]
+    )

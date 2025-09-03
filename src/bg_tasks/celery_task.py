@@ -4,6 +4,7 @@ from bg_tasks.schemas import BaseCeleryTaskData, BaseCeleryTaskReslt
 from loguru import logger
 from bg_tasks.utils import send_report_of_scanning, get_short_statistics
 
+
 @app.task
 def celery_task(data: dict = None):
     try:
@@ -24,9 +25,9 @@ def celery_task(data: dict = None):
         logger.error(f"Ошибка: {str(e)}")
         raise e
 
+
 async def _async_task(validated_data: BaseCeleryTaskData = None):
     result = BaseCeleryTaskReslt()
     await send_report_of_scanning(result, validated_data)
     short_statistics = await get_short_statistics(result)
     return short_statistics
-
