@@ -40,9 +40,7 @@ async def send_report_of_scanning(
         if data:
             report_text += ""
             try:
-                await bot.send_message(
-                    chat_id=data.initiator_id, text=report_text
-                )
+                await bot.send_message(chat_id=data.initiator_id, text=report_text)
             except Exception as e:
                 logger.error(
                     f"Ошибка отправки отчета инициатору {data.initiator_id}: {e}"
